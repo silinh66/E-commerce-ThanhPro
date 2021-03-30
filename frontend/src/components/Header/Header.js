@@ -92,77 +92,79 @@ function Header(props) {
       },
     ];
     setNavBar(navBar);
-    axios.get(`http://pe.heromc.net:4000/products`).then((res) => {
-      let virtualNavBar = [...navBar];
-      const menProduct = [];
-      const womenProduct = [];
-      for (let i in res.data) {
-        if (res.data[i].productSex === "Man") {
-          menProduct.push(res.data[i].productGroupCate);
-        }
-        if (res.data[i].productSex === "Woman") {
-          womenProduct.push(res.data[i].productGroupCate);
-        }
-      }
-      let groupCateMen = menProduct.filter(function (elem, index, self) {
-        return index === self.indexOf(elem);
-      });
-      let groupCateWomen = womenProduct.filter(function (elem, index, self) {
-        return index === self.indexOf(elem);
-      });
-      const menDropdownContent = [];
-      for (let i in groupCateMen) {
-        let menData = {};
-        let cateList = [];
-        for (let j in res.data) {
-          if (
-            res.data[j].productGroupCate === groupCateMen[i] &&
-            res.data[j].productSex === "Man"
-          ) {
-            cateList.push(res.data[j].productCate);
+    axios
+      .get(`https://5f85567cc29abd0016190651.mockapi.io/api/movies`)
+      .then((res) => {
+        let virtualNavBar = [...navBar];
+        const menProduct = [];
+        const womenProduct = [];
+        for (let i in res.data) {
+          if (res.data[i].productSex === "Man") {
+            menProduct.push(res.data[i].productGroupCate);
+          }
+          if (res.data[i].productSex === "Woman") {
+            womenProduct.push(res.data[i].productGroupCate);
           }
         }
-        let cateList2 = cateList.filter(function (elem, index, self) {
+        let groupCateMen = menProduct.filter(function (elem, index, self) {
           return index === self.indexOf(elem);
         });
-        // console.log(cateList)
-        menData = {
-          dropdownTitle: groupCateMen[i],
-          dropdownList: cateList2,
-        };
-        menDropdownContent.push(menData);
-      }
-      const womenDropdownContent = [];
-      for (let i in groupCateWomen) {
-        let womenData = {};
-        let cateList = [];
-        for (let j in res.data) {
-          if (
-            res.data[j].productGroupCate === groupCateWomen[i] &&
-            res.data[j].productSex === "Woman"
-          ) {
-            cateList.push(res.data[j].productCate);
+        let groupCateWomen = womenProduct.filter(function (elem, index, self) {
+          return index === self.indexOf(elem);
+        });
+        const menDropdownContent = [];
+        for (let i in groupCateMen) {
+          let menData = {};
+          let cateList = [];
+          for (let j in res.data) {
+            if (
+              res.data[j].productGroupCate === groupCateMen[i] &&
+              res.data[j].productSex === "Man"
+            ) {
+              cateList.push(res.data[j].productCate);
+            }
+          }
+          let cateList2 = cateList.filter(function (elem, index, self) {
+            return index === self.indexOf(elem);
+          });
+          // console.log(cateList)
+          menData = {
+            dropdownTitle: groupCateMen[i],
+            dropdownList: cateList2,
+          };
+          menDropdownContent.push(menData);
+        }
+        const womenDropdownContent = [];
+        for (let i in groupCateWomen) {
+          let womenData = {};
+          let cateList = [];
+          for (let j in res.data) {
+            if (
+              res.data[j].productGroupCate === groupCateWomen[i] &&
+              res.data[j].productSex === "Woman"
+            ) {
+              cateList.push(res.data[j].productCate);
+            }
+          }
+          let cateList2 = cateList.filter(function (elem, index, self) {
+            return index === self.indexOf(elem);
+          });
+          womenData = {
+            dropdownTitle: groupCateWomen[i],
+            dropdownList: cateList2,
+          };
+          womenDropdownContent.push(womenData);
+        }
+        for (let i in virtualNavBar) {
+          if (virtualNavBar[i].label === "Men") {
+            virtualNavBar[i].dropdownContent = menDropdownContent;
+          }
+          if (virtualNavBar[i].label === "Women") {
+            virtualNavBar[i].dropdownContent = womenDropdownContent;
           }
         }
-        let cateList2 = cateList.filter(function (elem, index, self) {
-          return index === self.indexOf(elem);
-        });
-        womenData = {
-          dropdownTitle: groupCateWomen[i],
-          dropdownList: cateList2,
-        };
-        womenDropdownContent.push(womenData);
-      }
-      for (let i in virtualNavBar) {
-        if (virtualNavBar[i].label === "Men") {
-          virtualNavBar[i].dropdownContent = menDropdownContent;
-        }
-        if (virtualNavBar[i].label === "Women") {
-          virtualNavBar[i].dropdownContent = womenDropdownContent;
-        }
-      }
-      setNavBar(virtualNavBar);
-    });
+        setNavBar(virtualNavBar);
+      });
     if (
       location === "/news" ||
       location === `/news/category/${props.match.params.cate}` ||
@@ -491,7 +493,7 @@ function Header(props) {
         })}
       </ul>
       <div className="logo flex-center">
-        <Link to="/">
+        <Link to="/" style={{ textDecoration: "none" }}>
           {whiteText === true ? (
             <img
               src="https://demo.uix.store/sober/wp-content/themes/sober/images/logo-light.svg"
